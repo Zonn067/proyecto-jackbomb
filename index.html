@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>JACKBOMB</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    #172554 0%,
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    circle at 80% 80%,
+                    #3b0764 0%,
+                    transparent 35%
+                ),
+
+                #050816;
+
+            color: #f8fafc;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            padding: 25px;
+
+        }
+
+
+        /* ================= HEADER ================= */
+
+        header {
+
+            max-width: 1450px;
+
+            margin: auto;
+            margin-bottom: 20px;
+
+            padding: 18px 25px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            border: 1px solid #26344d;
+
+            border-radius: 15px;
+
+            background:
+                rgba(8, 15, 30, .82);
+
+            backdrop-filter: blur(15px);
+
+            box-shadow:
+                0 0 30px rgba(0, 0, 0, .35);
+
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: 900;
+
+            letter-spacing: 3px;
+
+        }
+
+
+        .logo span {
+
+            color: #22d3ee;
+
+        }
+
+
+        .connection {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+
+        }
+
+
+        .led {
+
+            width: 9px;
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            box-shadow:
+                0 0 12px #22c55e;
+
+        }
+
+
+
+        /* ================= LAYOUT ================= */
+
+        .layout {
+
+            max-width: 1450px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                390px;
+
+            gap: 20px;
+
+        }
+
+
+
+        /* ================= MESA ================= */
+
+        .table {
+
+            min-height: 720px;
+
+            position: relative;
+
+            border: 1px solid #24324a;
+
+            border-radius: 20px;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #123d35 0%,
+                    #092a26 48%,
+                    #061d1b 100%
+                );
+
+            box-shadow:
+                0 20px 70px rgba(0, 0, 0, .45),
+                inset 0 0 70px rgba(0, 0, 0, .3);
+
+            padding: 30px;
+
+            overflow: hidden;
+
+        }
+
+
+        .table::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 12px;
+
+            border:
+                1px solid
+                rgba(148, 163, 184, .14);
+
+            border-radius: 15px;
+
+            pointer-events: none;
+
+        }
+
+
+        .table-title {
+
+            position: relative;
+
+            text-align: center;
+
+            font-size: 15px;
+
+            letter-spacing: 5px;
+
+            color: #86efac;
+
+            margin-bottom: 55px;
+
+        }
+
+
+
+        /* ================= ZONA DE PUNTAJES ================= */
+
+        .scores {
+
+            position: relative;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 30px;
+
+            margin: 0 auto;
+
+            max-width: 750px;
+
+        }
+
+
+        .score-box {
+
+            min-height: 210px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 18px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(2, 6, 23, .38);
+
+            border:
+                1px solid
+                rgba(148, 163, 184, .15);
+
+            box-shadow:
+                inset 0 0 30px
+                rgba(0, 0, 0, .15);
+
+        }
+
+
+        .score-name {
+
+            font-size: 14px;
+
+            font-weight: 900;
+
+            letter-spacing: 3px;
+
+            color: #cbd5e1;
+
+        }
+
+
+        .score-number {
+
+            font-size: 80px;
+
+            line-height: 1;
+
+            font-weight: 900;
+
+            color: #67e8f9;
+
+            text-shadow:
+                0 0 25px
+                rgba(34, 211, 238, .3);
+
+        }
+
+
+        .score-label {
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            letter-spacing: 2px;
+
+        }
+
+
+
+        /* ================= ESTADO BOMBA ================= */
+
+        .bomb-status {
+
+            position: relative;
+
+            width: fit-content;
+
+            margin: 45px auto 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px 20px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(0, 0, 0, .3);
+
+            border:
+                1px solid
+                rgba(239, 68, 68, .25);
+
+            color: #fca5a5;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .bomb-light {
+
+            width: 10px;
+            height: 10px;
+
+            border-radius: 50%;
+
+            background: #ef4444;
+
+            box-shadow:
+                0 0 14px #ef4444;
+
+            animation:
+                pulse 1s infinite;
+
+        }
+
+
+        @keyframes pulse {
+
+            50% {
+
+                opacity: .3;
+
+                box-shadow: none;
+
+            }
+
+        }
+
+
+
+        /* ================= RESULTADO ================= */
+
+        .result {
+
+            position: relative;
+
+            min-height: 35px;
+
+            text-align: center;
+
+            font-size: 18px;
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+            color: #facc15;
+
+            margin-bottom: 25px;
+
+        }
+
+
+
+        /* ================= BOTONES ================= */
+
+        .controls {
+
+            position: relative;
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 20px;
+
+        }
+
+
+        button {
+
+            border: none;
+
+            cursor: pointer;
+
+            padding: 14px 25px;
+
+            border-radius: 10px;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            transition: .2s;
+
+            background: #1e293b;
+
+            border:
+                1px solid #334155;
+
+        }
+
+
+        button:hover {
+
+            transform:
+                translateY(-2px);
+
+            filter:
+                brightness(1.15);
+
+        }
+
+
+        button:active {
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        button:disabled {
+
+            opacity: .35;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+        }
+
+
+        .hit {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0891b2,
+                    #2563eb
+                );
+
+            border-color: #22d3ee;
+
+            box-shadow:
+                0 0 20px
+                rgba(34, 211, 238, .18);
+
+        }
+
+
+        .stand {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #c026d3
+                );
+
+            border-color: #d946ef;
+
+            box-shadow:
+                0 0 20px
+                rgba(217, 70, 239, .15);
+
+        }
+
+
+        .new-game {
+
+            background:
+                #1e293b;
+
+        }
+
+
+
+        /* ================= CONSOLA ================= */
+
+        .console {
+
+            height: 720px;
+
+            background:
+                #050b14;
+
+            border-radius: 20px;
+
+            border:
+                1px solid #26344d;
+
+            display: flex;
+
+            flex-direction: column;
+
+            box-shadow:
+                0 20px 70px
+                rgba(0, 0, 0, .45);
+
+        }
+
+
+        .console-header {
+
+            padding: 18px;
+
+            border-bottom:
+                1px solid #1e293b;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+        }
+
+
+        .terminal-title {
+
+            font-size: 12px;
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+            color: #67e8f9;
+
+        }
+
+
+        .terminal-dots {
+
+            display: flex;
+
+            gap: 6px;
+
+        }
+
+
+        .terminal-dots span {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+        }
+
+
+        .dot-red {
+            background: #ef4444;
+        }
+
+
+        .dot-yellow {
+            background: #eab308;
+        }
+
+
+        .dot-green {
+            background: #22c55e;
+        }
+
+
+        .console-body {
+
+            flex: 1;
+
+            overflow-y: auto;
+
+            padding: 18px;
+
+            font-family:
+                "Consolas",
+                monospace;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+
+        }
+
+
+        .log {
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .time {
+
+            color: #475569;
+
+        }
+
+
+        .system {
+
+            color: #64748b;
+
+        }
+
+
+        .info {
+
+            color: #67e8f9;
+
+        }
+
+
+        .success {
+
+            color: #4ade80;
+
+        }
+
+
+        .warning {
+
+            color: #facc15;
+
+        }
+
+
+        .danger {
+
+            color: #fb7185;
+
+        }
+
+
+        .console-input {
+
+            border-top:
+                1px solid #1e293b;
+
+            padding:
+                12px 15px;
+
+            color: #4ade80;
+
+            font-family:
+                monospace;
+
+            font-size: 12px;
+
+        }
+
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+
+            .layout {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .console {
+
+                height: 400px;
+
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            body {
+
+                padding: 10px;
+
+            }
+
+            header {
+
+                padding: 15px;
+
+            }
+
+            .connection {
+
+                display: none;
+
+            }
+
+            .scores {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .score-box {
+
+                min-height: 160px;
+
+            }
+
+            .score-number {
+
+                font-size: 60px;
+
+            }
+
+            .table {
+
+                padding: 20px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="logo">
+
+        
+        <span>JACKBOMB</span>
+
+    </div>
+
+
+    <div class="connection">
+
+        <div class="led"></div>
+
+        SISTEMA ONLINE
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     CONTENIDO
+===================================================== -->
+
+<div class="layout">
+
+
+    <!-- ================= JUEGO ================= -->
+
+    <main class="table">
+
+
+        <div class="table-title">
+
+            JACKBOMB
+
+        </div>
+
+
+
+        <!-- PUNTAJES -->
+
+        <div class="scores">
+
+
+            <!-- DEALER -->
+
+            <div class="score-box">
+
+                <div class="score-name">
+
+                    DEALER
+
+                </div>
+
+
+                <div
+                    class="score-number"
+                    id="dealerScore">
+
+                    ?
+
+                </div>
+
+
+                <div class="score-label">
+
+                    PUNTAJE
+
+                </div>
+
+            </div>
+
+
+
+            <!-- JUGADOR -->
+
+            <div class="score-box">
+
+                <div class="score-name">
+
+                    JUGADOR
+
+                </div>
+
+
+                <div
+                    class="score-number"
+                    id="playerScore">
+
+                    0
+
+                </div>
+
+
+                <div class="score-label">
+
+                    PUNTAJE
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ESTADO BOMBA -->
+
+        <div class="bomb-status">
+
+            <div class="bomb-light"></div>
+
+            BOMBA:
+
+            <span id="bombState">
+
+                activada
+                +
+
+            </span>
+
+        </div>
+
+
+
+        <!-- RESULTADO -->
+
+        <div
+            class="result"
+            id="result">
+
+        </div>
+
+
+
+        <!-- BOTONES -->
+
+        <div class="controls">
+
+
+            <button
+                class="hit"
+                id="hitButton"
+                onclick="hit()">
+
+                + PEDIR CARTA
+
+            </button>
+
+
+            <button
+                class="stand"
+                id="standButton"
+                onclick="stand()">
+
+                ✓ PLANTARSE
+
+            </button>
+
+
+            <button
+                class="new-game"
+                onclick="newGame()">
+
+                ↻ NUEVA PARTIDA
+
+            </button>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- ================= CONSOLA ================= -->
+
+    <aside class="console">
+
+
+        <div class="console-header">
+
+
+            <div class="terminal-title">
+
+                SYSTEM CONSOLE
+
+            </div>
+
+
+            <div class="terminal-dots">
+
+                <span class="dot-red"></span>
+
+                <span class="dot-yellow"></span>
+
+                <span class="dot-green"></span>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div
+            class="console-body"
+            id="console">
+
+        </div>
+
+
+
+        <div class="console-input">
+
+            root@blackjack:~$ _
+
+        </div>
+
+
+    </aside>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   BLACKJACK
+===================================================== */
+
+
+const suits = [
+    "♠",
+    "♥",
+    "♦",
+    "♣"
+];
+
+
+const values = [
+    "A",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "J",
+    "Q",
+    "K"
+];
+
+
+let deck = [];
+
+let player = [];
+
+let dealer = [];
+
+let gameOver = false;
+
+
+
+/* =====================================================
+   CONSOLA
+===================================================== */
+
+function log(message, type = "system") {
+
+    const consoleElement =
+        document.getElementById("console");
+
+
+    const time =
+        new Date().toLocaleTimeString();
+
+
+    const line =
+        document.createElement("div");
+
+
+    line.className =
+        "log " + type;
+
+
+    line.innerHTML =
+
+        `<span class="time">
+            [${time}]
+        </span>
+
+        ${message}`;
+
+
+    consoleElement.appendChild(line);
+
+
+    consoleElement.scrollTop =
+        consoleElement.scrollHeight;
+
+}
+
+
+
+/* =====================================================
+   CREAR MAZO
+===================================================== */
+
+function createDeck() {
+
+    deck = [];
+
+
+    for (const suit of suits) {
+
+        for (const value of values) {
+
+            deck.push({
+                suit: suit,
+                value: value
+            });
+
+        }
+
+    }
+
+
+    deck.sort(
+        () => Math.random() - 0.5
+    );
+
+
+    log(
+        "Mazo preparado: 52 cartas.",
+        "info"
+    );
+
+}
+
+
+
+/* =====================================================
+   SACAR CARTA
+===================================================== */
+
+function drawCard() {
+
+    return deck.pop();
+
+}
+
+
+
+/* =====================================================
+   CALCULAR PUNTAJE
+===================================================== */
+
+function calculateScore(hand) {
+
+    let score = 0;
+
+    let aces = 0;
+
+
+    hand.forEach(card => {
+
+
+        if (card.value === "A") {
+
+            score += 11;
+
+            aces++;
+
+        }
+
+
+        else if (
+            card.value === "K" ||
+            card.value === "Q" ||
+            card.value === "J"
+        ) {
+
+            score += 10;
+
+        }
+
+
+        else {
+
+            score +=
+                Number(card.value);
+
+        }
+
+    });
+
+
+    while (
+        score > 21 &&
+        aces > 0
+    ) {
+
+        score -= 10;
+
+        aces--;
+
+    }
+
+
+    return score;
+
+}
+
+
+
+/* =====================================================
+   ACTUALIZAR PUNTAJES
+===================================================== */
+
+function updateScores() {
+
+    document.getElementById(
+        "playerScore"
+    ).textContent =
+        calculateScore(player);
+
+
+    if (gameOver) {
+
+        document.getElementById(
+            "dealerScore"
+        ).textContent =
+            calculateScore(dealer);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   NUEVA PARTIDA
+===================================================== */
+
+function newGame() {
+
+    createDeck();
+
+
+    player = [];
+
+    dealer = [];
+
+    gameOver = false;
+
+
+    document.getElementById(
+        "result"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "bombState"
+    ).textContent =
+        "ARMADA";
+
+
+    document.getElementById(
+        "hitButton"
+    ).disabled = false;
+
+
+    document.getElementById(
+        "standButton"
+    ).disabled = false;
+
+
+
+    /*
+       REPARTIMOS LAS CARTAS
+       INTERNAMENTE.
+
+       NO SE MUESTRAN EN PANTALLA.
+    */
+
+    player.push(drawCard());
+
+    player.push(drawCard());
+
+
+    dealer.push(drawCard());
+
+    dealer.push(drawCard());
+
+
+    updateScores();
+
+
+    document.getElementById(
+        "dealerScore"
+    ).textContent = "?";
+
+
+
+    log(
+        "--------------------------------",
+        "system"
+    );
+
+
+    log(
+        "NUEVA PARTIDA INICIADA.",
+        "info"
+    );
+
+
+    log(
+        "Cartas repartidas.",
+        "system"
+    );
+
+
+    log(
+        "Puntaje inicial del jugador: "
+        + calculateScore(player),
+        "info"
+    );
+
+
+    log(
+        "La carta del dealer permanece oculta.",
+        "warning"
+    );
+
+
+    log(
+        "Esperando acción del jugador...",
+        "success"
+    );
+
+
+    /*
+       FUTURA CONEXIÓN CON ARDUINO:
+
+       sendToArduino("NEW_GAME");
+
+    */
+
+}
+
+
+
+/* =====================================================
+   PEDIR CARTA
+===================================================== */
+
+function hit() {
+
+    if (gameOver) {
+
+        return;
+
+    }
+
+
+    const card =
+        drawCard();
+
+
+    player.push(card);
+
+
+    const score =
+        calculateScore(player);
+
+
+    updateScores();
+
+
+    log(
+        "El jugador pidió una carta.",
+        "info"
+    );
+
+
+    log(
+        "Carta recibida: "
+        + card.value
+        + card.suit,
+        "system"
+    );
+
+
+    log(
+        "Puntaje del jugador: "
+        + score,
+        "info"
+    );
+
+
+
+    /* BUST */
+
+    if (score > 21) {
+
+        log(
+            "¡¡BUST!! El jugador superó 21.",
+            "danger"
+        );
+
+
+        finishGame(
+            "BUST"
+        );
+
+    }
+
+
+
+    /* BLACKJACK */
+
+    else if (score === 21) {
+
+        log(
+            "¡El jugador llegó a 21!",
+            "success"
+        );
+
+
+        stand();
+
+    }
+
+
+    /*
+       FUTURA CONEXIÓN:
+
+       sendToArduino("HIT");
+
+    */
+
+}
+
+
+
+/* =====================================================
+   PLANTARSE
+===================================================== */
+
+function stand() {
+
+    if (gameOver) {
+
+        return;
+
+    }
+
+
+    log(
+        "El jugador decidió plantarse.",
+        "warning"
+    );
+
+
+    /*
+       EL DEALER ROBA HASTA LLEGAR
+       A 17 O MÁS.
+    */
+
+    while (
+        calculateScore(dealer) < 17
+    ) {
+
+        const card =
+            drawCard();
+
+
+        dealer.push(card);
+
+
+        log(
+            "El dealer pidió una carta.",
+            "system"
+        );
+
+
+        log(
+            "El dealer recibió: "
+            + card.value
+            + card.suit,
+            "system"
+        );
+
+    }
+
+
+    const playerScore =
+        calculateScore(player);
+
+
+    const dealerScore =
+        calculateScore(dealer);
+
+
+    gameOver = true;
+
+
+    updateScores();
+
+
+    document.getElementById(
+        "dealerScore"
+    ).textContent =
+        dealerScore;
+
+
+    log(
+        "Puntaje final jugador: "
+        + playerScore,
+        "info"
+    );
+
+
+    log(
+        "Puntaje final dealer: "
+        + dealerScore,
+        "info"
+    );
+
+
+
+    /* RESULTADO */
+
+    if (dealerScore > 21) {
+
+        finishGame(
+            "DEALER_BUST"
+        );
+
+    }
+
+
+    else if (
+        playerScore > dealerScore
+    ) {
+
+        finishGame(
+            "PLAYER_WIN"
+        );
+
+    }
+
+
+    else if (
+        playerScore < dealerScore
+    ) {
+
+        finishGame(
+            "DEALER_WIN"
+        );
+
+    }
+
+
+    else {
+
+        finishGame(
+            "DRAW"
+        );
+
+    }
+
+
+    /*
+       FUTURA CONEXIÓN:
+
+       sendToArduino("STAND");
+
+    */
+
+}
+
+
+
+/* =====================================================
+   TERMINAR PARTIDA
+===================================================== */
+
+function finishGame(result) {
+
+
+    gameOver = true;
+
+
+    document.getElementById(
+        "hitButton"
+    ).disabled = true;
+
+
+    document.getElementById(
+        "standButton"
+    ).disabled = true;
+
+
+
+    const resultElement =
+        document.getElementById(
+            "result"
+        );
+
+
+
+    if (result === "PLAYER_WIN") {
+
+        resultElement.textContent =
+            "🏆 ¡GANASTE!";
+
+
+        resultElement.style.color =
+            "#4ade80";
+
+
+        log(
+            ">>> VICTORIA DEL JUGADOR <<<",
+            "success"
+        );
+
+    }
+
+
+    else if (
+        result === "DEALER_WIN"
+    ) {
+
+        resultElement.textContent =
+            "💀 PERDISTE";
+
+
+        resultElement.style.color =
+            "#fb7185";
+
+
+        log(
+            ">>> GANA EL DEALER <<<",
+            "danger"
+        );
+
+    }
+
+
+    else if (
+        result === "DEALER_BUST"
+    ) {
+
+        resultElement.textContent =
+            "🏆 ¡DEALER BUST!";
+
+
+        resultElement.style.color =
+            "#4ade80";
+
+
+        log(
+            ">>> EL DEALER SUPERÓ 21 <<<",
+            "success"
+        );
+
+    }
+
+
+    else if (
+        result === "BUST"
+    ) {
+
+        resultElement.textContent =
+            "💥 BUST";
+
+
+        resultElement.style.color =
+            "#fb7185";
+
+
+        log(
+            ">>> EL JUGADOR PERDIÓ <<<",
+            "danger"
+        );
+
+    }
+
+
+    else {
+
+        resultElement.textContent =
+            "🤝 EMPATE";
+
+
+        resultElement.style.color =
+            "#facc15";
+
+
+        log(
+            ">>> EMPATE <<<",
+            "warning"
+        );
+
+    }
+
+
+
+    /*
+       ESTADO DE LA BOMBA
+
+       ACÁ DESPUÉS PODEMOS HACER
+       LA CONEXIÓN CON TINKERCAD /
+       ARDUINO.
+    */
+
+    document.getElementById(
+        "bombState"
+    ).textContent =
+        "DESACTIVADA";
+
+
+    log(
+        "Partida finalizada.",
+        "system"
+    );
+
+
+    log(
+        "Sistema esperando nueva partida...",
+        "warning"
+    );
+
+}
+
+
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+log(
+    "BLACKJACK / LA BOMBA v1.0",
+    "info"
+);
+
+
+log(
+    "Inicializando sistema...",
+    "system"
+);
+
+
+log(
+    "Módulo de juego: OK",
+    "success"
+);
+
+
+log(
+    "Consola: OK",
+    "success"
+);
+
+
+log(
+    "Sistema listo.",
+    "success"
+);
+
+
+newGame();
+
+
+</script>
+
+
+</body>
+
+</html>
